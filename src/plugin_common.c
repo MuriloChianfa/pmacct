@@ -784,6 +784,11 @@ int P_trigger_exec(char *filename)
   case -1:
     return -1;
   case 0:
+#if defined (SOLARIS)
+	signal(SIGCHLD, SIG_IGN);
+#else
+	signal(SIGCHLD, ignore_falling_child);
+#endif
     execv(filename, args);
     _exit(0);
   }
